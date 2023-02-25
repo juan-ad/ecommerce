@@ -12,6 +12,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    # Convertir la entidad o modelo a un JSON
     def toJSON(self):
         item = model_to_dict(self)
         return item
