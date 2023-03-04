@@ -12,10 +12,10 @@ SQLITE = {
 POSTGRESQL = {
     'default': {
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'zerodb',
-        'USER': 'zero_adm',
-        'PASSWORD': 'Z3r0.4dm*',
-        'HOST': 'postgresql.zero.com',
+        'NAME': 'ecommerce_django',
+        'USER': 'postgres',
+        'PASSWORD': '3127102381',
+        'HOST': '127.0.0.1',
         'PORT': '5432'
     }
 }
