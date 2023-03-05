@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     # Libs
     'widget_tweaks',
     # Apps
-    'core.erp'
+    'core.erp',
+    'core.homepage',
+    'core.login',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +128,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+LOGIN_REDIRECT_URL = '/erp/dashboard/'
+
+LOGOUT_REDIRECT_URL = '/login/'
+
+LOGIN_URL = '/login/'

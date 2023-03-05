@@ -1,4 +1,4 @@
-{% extends 'body.html' %}
+{% extends 'layout.html' %}
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
@@ -8,10 +8,15 @@
     <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+    {% block head_list %}
+
+    {% endblock %}
+
 {% endblock %}
 
 {% block content %}
-    <div class="card card-default">
+    <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-search"></i>
@@ -33,8 +38,11 @@
             </table>
         </div>
         <div class="card-footer">
-            <a href="{{create_url}}" class="btn btn-primary btn-flat btnTest">
+            <a href="{{ create_url }}" class="btn btn-primary btn-flat btnTest">
                 <i class="fas fa-plus"></i> Nuevo registro
+            </a>
+            <a href="{{ list_url }}" class="btn btn-success btn-flat">
+                <i class="fas fa-sync"></i> Actualizar
             </a>
         </div>
     </div>
@@ -47,19 +55,20 @@
                 responsive: true,
                 autoWidth: false
             });
-        });
-        $('.btnTest').on('click', function() {
-            $.ajax({
-                url: "{% url 'erp:category_list' %}",
-                type: 'POST',
-                data: {id: 1},
-                dataType: 'json'                
-            }).done(function (data){
-                console.log(data);
-            }).fail(function (data) {
-                console.log(data)
-            }).always(function (data){
-                console.log("Complete");
+
+            $('.btnTest').on('click', function () {
+                $.ajax({
+                    url: '{% url 'erp:category_list' %}',
+                    type: 'POST',
+                    data: {id: 1},
+                    dataType: 'json'
+                }).done(function (data) {
+                    console.log(data);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown);
+                }).always(function (data) {
+
+                });
             });
         });
     </script>

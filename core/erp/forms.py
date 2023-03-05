@@ -1,5 +1,7 @@
 from django.forms import *
+
 from core.erp.models import Category
+
 
 class CategoryForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -8,26 +10,25 @@ class CategoryForm(ModelForm):
         #     form.field.widget.attrs['class'] = 'form-control'
         #     form.field.widget.attrs['autocomplete'] = 'off'
         self.fields['name'].widget.attrs['autofocus'] = True
-    
+
     class Meta:
         model = Category
         fields = '__all__'
-        # Personalizar los campos del formulario
         widgets = {
-            "name": TextInput(
-                attrs = {
-                    'placeholder': 'Ingrese un nombre'
+            'name': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese un nombre',
                 }
             ),
-            "desc": Textarea(
-                attrs = {
+            'desc': Textarea(
+                attrs={
                     'placeholder': 'Ingrese un nombre',
                     'rows': 3,
                     'cols': 3
                 }
-            )
+            ),
         }
-    
+
     def save(self, commit=True):
         data = {}
         form = super()
@@ -39,3 +40,10 @@ class CategoryForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+    # def clean(self):
+    #     cleaned = super().clean()
+    #     if len(cleaned['name']) <= 50:
+    #         raise forms.ValidationError('Validacion xxx')
+    #         # self.add_error('name', 'Le faltan caracteres')
+    #     return cleaned
