@@ -11,3 +11,4 @@ psycopg2             2.9.5
 setuptools           44.0.0 
 sqlparse             0.4.3  
 wheel                0.34.2 
+django-crum          0.7.9   

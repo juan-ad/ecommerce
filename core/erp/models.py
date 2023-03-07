@@ -1,8 +1,11 @@
-from django.db import models
 from datetime import datetime
+
+from django.db import models
 from django.forms import model_to_dict
 
+from app.settings import MEDIA_URL, STATIC_URL
 from core.erp.choices import gender_choices
+from core.models import BaseModel
 
 
 class Category(models.Model):
@@ -11,8 +14,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-    # Convertir la entidad o modelo a un JSON
+        
     def toJSON(self):
         item = model_to_dict(self)
         return item
@@ -27,7 +29,6 @@ class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     cat = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoría')
     image = models.ImageField(upload_to='product/%Y/%m/%d', null=True, blank=True, verbose_name='Imagen')
-    stock = models.IntegerField(default=0, verbose_name='Stock')
     pvp = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio de venta')
 
     def __str__(self):
@@ -35,7 +36,6 @@ class Product(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['full_name'] = '{} / {}'.format(self.name, self.cat.name)
         item['cat'] = self.cat.toJSON()
         item['image'] = self.get_image()
         item['pvp'] = format(self.pvp, '.2f')
@@ -61,16 +61,12 @@ class Client(models.Model):
     gender = models.CharField(max_length=10, choices=gender_choices, default='male', verbose_name='Sexo')
 
     def __str__(self):
-        return self.get_full_name()
-
-    def get_full_name(self):
-        return '{} {} / {}'.format(self.names, self.surnames, self.dni)
+        return self.names
 
     def toJSON(self):
         item = model_to_dict(self)
         item['gender'] = {'id': self.gender, 'name': self.get_gender_display()}
         item['date_birthday'] = self.date_birthday.strftime('%Y-%m-%d')
-        item['full_name'] = self.get_full_name()
         return item
 
     class Meta:
@@ -89,22 +85,6 @@ class Sale(models.Model):
     def __str__(self):
         return self.cli.names
 
-    def toJSON(self):
-        item = model_to_dict(self)
-        item['cli'] = self.cli.toJSON()
-        item['subtotal'] = format(self.subtotal, '.2f')
-        item['iva'] = format(self.iva, '.2f')
-        item['total'] = format(self.total, '.2f')
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
-        item['det'] = [i.toJSON() for i in self.detsale_set.all()]
-        return item
-
-    def delete(self, using=None, keep_parents=False):
-        for det in self.detsale_set.all():
-            det.prod.stock += det.cant
-            det.prod.save()
-        super(Sale, self).delete()
-
     class Meta:
         verbose_name = 'Venta'
         verbose_name_plural = 'Ventas'
@@ -120,13 +100,6 @@ class DetSale(models.Model):
 
     def __str__(self):
         return self.prod.name
-
-    def toJSON(self):
-        item = model_to_dict(self, exclude=['sale'])
-        item['prod'] = self.prod.toJSON()
-        item['price'] = format(self.price, '.2f')
-        item['subtotal'] = format(self.subtotal, '.2f')
-        return item
 
     class Meta:
         verbose_name = 'Detalle de Venta'

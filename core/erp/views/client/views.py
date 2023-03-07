@@ -5,15 +5,15 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from core.erp.forms import CategoryForm
+from core.erp.forms import ClientForm
 from core.erp.mixins import ValidatePermissionRequiredMixin
-from core.erp.models import Category
+from core.erp.models import Client
 
 
-class CategoryListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
-    model = Category
-    template_name = 'category/list.html'
-    permission_required = 'erp.view_category'
+class ClientListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
+    model = Client
+    template_name = 'client/list.html'
+    permission_required = 'erp.view_client'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -25,7 +25,7 @@ class CategoryListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, List
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Category.objects.all():
+                for i in Client.objects.all():
                     data.append(i.toJSON())
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -35,19 +35,19 @@ class CategoryListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, List
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Listado de Categorías'
-        context['create_url'] = reverse_lazy('erp:category_create')
-        context['list_url'] = reverse_lazy('erp:category_list')
-        context['entity'] = 'Categorias'
+        context['title'] = 'Listado de Clientes'
+        context['create_url'] = reverse_lazy('erp:client_create')
+        context['list_url'] = reverse_lazy('erp:client_list')
+        context['entity'] = 'Clientes'
         return context
 
 
-class CategoryCreateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
-    model = Category
-    form_class = CategoryForm
-    template_name = 'category/create.html'
-    success_url = reverse_lazy('erp:category_list')
-    permission_required = 'erp.add_category'
+class ClientCreateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+    model = Client
+    form_class = ClientForm
+    template_name = 'client/create.html'
+    success_url = reverse_lazy('erp:client_list')
+    permission_required = 'erp.add_client'
     url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
@@ -68,19 +68,19 @@ class CategoryCreateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Cr
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Creación una Categoria'
-        context['entity'] = 'Categorias'
+        context['title'] = 'Creación un Cliente'
+        context['entity'] = 'Clientes'
         context['list_url'] = self.success_url
         context['action'] = 'add'
         return context
 
 
-class CategoryUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
-    model = Category
-    form_class = CategoryForm
-    template_name = 'category/create.html'
-    success_url = reverse_lazy('erp:category_list')
-    permission_required = 'erp.change_category'
+class ClientUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
+    model = Client
+    form_class = ClientForm
+    template_name = 'client/create.html'
+    success_url = reverse_lazy('erp:client_list')
+    permission_required = 'erp.change_client'
     url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
@@ -102,18 +102,18 @@ class CategoryUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Up
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Edición una Categoria'
-        context['entity'] = 'Categorias'
+        context['title'] = 'Edición un Cliente'
+        context['entity'] = 'Clientes'
         context['list_url'] = self.success_url
         context['action'] = 'edit'
         return context
 
 
-class CategoryDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DeleteView):
-    model = Category
-    template_name = 'category/delete.html'
-    success_url = reverse_lazy('erp:category_list')
-    permission_required = 'erp.delete_category'
+class ClientDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DeleteView):
+    model = Client
+    template_name = 'client/delete.html'
+    success_url = reverse_lazy('erp:client_list')
+    permission_required = 'erp.delete_client'
     url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
@@ -130,7 +130,7 @@ class CategoryDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, De
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Eliminación de una Categoria'
-        context['entity'] = 'Categorias'
+        context['title'] = 'Eliminación de un Cliente'
+        context['entity'] = 'Clientes'
         context['list_url'] = self.success_url
         return context
