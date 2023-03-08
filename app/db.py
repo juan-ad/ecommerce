@@ -14,7 +14,7 @@ POSTGRESQL = {
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ecommerce_django',
         'USER': 'postgres',
-        'PASSWORD': '3127102381',
+        'PASSWORD': 'postgres1',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
