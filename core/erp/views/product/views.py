@@ -127,7 +127,7 @@ class ProductDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Del
         try:
             self.object.delete()
         except Exception as e:
-            data['error'] = str(e)
+            data['error'] = "Error: Una o más ventas dependen de este producto"
         return JsonResponse(data)
 
     def get_context_data(self, **kwargs):

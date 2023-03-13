@@ -141,11 +141,11 @@ $(function () {
         decimals: 2,
         boostat: 5,
         maxboostedstep: 10,
-        postfix: '%'
+        postfix: ''
     }).on('change', function () {
         vents.calculate_invoice();
     })
-        .val(0.12);
+        .val(0.09);
 
     // search products
 

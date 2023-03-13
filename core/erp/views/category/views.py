@@ -125,7 +125,7 @@ class CategoryDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, De
         try:
             self.object.delete()
         except Exception as e:
-            data['error'] = str(e)
+            data['error'] = "Error: Uno o más productos dependen de esta categoría"
         return JsonResponse(data)
 
     def get_context_data(self, **kwargs):

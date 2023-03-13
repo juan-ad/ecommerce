@@ -125,7 +125,7 @@ class ClientDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Dele
         try:
             self.object.delete()
         except Exception as e:
-            data['error'] = str(e)
+            data['error'] = "Error: Una o más ventas dependen de este cliente"
         return JsonResponse(data)
 
     def get_context_data(self, **kwargs):
